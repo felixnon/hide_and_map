@@ -30,7 +30,7 @@ const RESOURCES = {"secret_config.example.json": "e3b04fbddb037338cc028b25e85c12
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
 "assets/NOTICES": "5cc497397e5b595fbe58ed2651fcff58",
 "assets/AssetManifest.json": "d71c007ff5f548416c3e0a95a2eca994",
-"assets/assets/map_style.json": "76ce717a405a227c10e4c6dc513a50b3",
+"assets/assets/map_style.json": "95dfe592d5163c0be51651cd459a7bad",
 "assets/assets/markers/timer_green_marker.png": "9b01d8135cd8ce0081c3120dd6432afe",
 "assets/assets/markers/ferry_stop_marker.png": "97c12f3ebdf60d4e6dc5d14830d79f21",
 "assets/assets/markers/timer_purple_marker.png": "f2cb7f6274b91bbf51c09ea1306764df",
@@ -64,7 +64,7 @@ const RESOURCES = {"secret_config.example.json": "e3b04fbddb037338cc028b25e85c12
 "assets/shaders/ink_sparkle.frag": "ecc85a2e95f5e9f53123dcaf8cb9b6ce",
 "assets/fonts/MaterialIcons-Regular.otf": "13664de72e87920d3349764eab417d39",
 "assets/AssetManifest.bin.json": "57c6e803dfe5894b19099c413ca9c8a8",
-"flutter_bootstrap.js": "1d93c14b6337b920a9e32d36d41a1bb9",
+"flutter_bootstrap.js": "fe9c9359fe45956a62d53a878fd5cc8e",
 "favicon.png": "650408103a4c447c63eabd1cad93a8e3",
 "main.dart.js": "2715e5307479e3ed9b65e5c147e7619e"};
 // The application shell files that are downloaded before a service worker can
