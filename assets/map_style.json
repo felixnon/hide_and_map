@@ -8,46 +8,6 @@
     ]
   },
   {
-    "featureType": "poi.attraction",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.government",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.medical",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.sports_complex",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
     "featureType": "transit.station",
     "elementType": "labels.text.fill",
     "stylers": [
