@@ -8,7 +8,7 @@ import 'map_overlay.dart';
 import 'station.dart';
 
 class FeatureFetcher {
-  static const String _overpassUrl = 'https://overpass-api.de/api/interpreter';
+  static const String _overpassUrl = 'https://overpass.kumi.systems/api/interpreter'; //'https://overpass-api.de/api/interpreter';
 
   static Future<List<Map<String, dynamic>>> _fetchElements(String query) async {
     final response = await http.post(Uri.parse(_overpassUrl), body: {'data': query});
