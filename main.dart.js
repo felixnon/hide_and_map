@@ -28543,7 +28543,7 @@ aaC(a){var s=0,r=A.w(t.b5),q,p,o
 var $async$aaC=A.x(function(b,c){if(b===1)return A.t(c,r)
 while(true)switch(s){case 0:p=t.N
 s=3
-return A.q(A.bcF(A.fU("https://overpass-api.de/api/interpreter",0,null),A.R(["data",a],p,p)),$async$aaC)
+return A.q(A.bcF(A.fU("https://overpass.kumi.systems/api/interpreter",0,null),A.R(["data",a],p,p)),$async$aaC)
 case 3:o=c
 p=o.b
 if(p!==200)throw A.k(A.ff("Overpass API error: "+p))
