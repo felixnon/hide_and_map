@@ -26,7 +26,7 @@ class PlayAreaSelector extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
-                  'Select Play Zone',
+                  'Select Play Zone - Hello World!',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
