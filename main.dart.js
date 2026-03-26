@@ -99881,7 +99881,7 @@ $0(){this.a.y=this.b},
 $S:0}
 A.aBd.prototype={
 $1(a){var s=null
-return A.ea(A.ME(A.c([A.pG(!1,B.eH,s,s,s,s,s,s,new A.aBb(a),s,s),A.aKI(!1,B.aGr,s,s,s,s,s,s,new A.aBc(this.a,a),s,A.aPQ(s,s,B.kK,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s))],t.p),B.aGF,B.aGn))},
+return A.ea(A.ME(A.c([A.pG(!1,B.eH,s,s,s,s,s,s,new A.aBb(a),s,s),A.aKI(!1,B.aGr,s,s,s,s,s,s,new A.aBc(this.a,a),s,A.aPQ(s,s,B.kK,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s))],t.p),B.aGG,B.aGn))},
 $S:224}
 A.aBb.prototype={
 $0(){return A.cL(this.a,!1).e1()},
@@ -100023,7 +100023,7 @@ s=A.c2("Select a preset or enter a custom radius ("+s+").",k,k,k,r.bS(B.cZ),k,k)
 q=l.e
 p=l.r
 o=p==="custom"
-p=A.Vc(q===B.bp?A.c([A.kP(B.aGg,new A.aF2(l),p==="500m"),A.kP(B.aGq,new A.aF3(l),p==="1000m"),A.kP(B.Kx,new A.aF6(l),o)],d):A.c([A.kP(B.aGk,new A.aF7(l),p==="0.25mi"),A.kP(B.aGK,new A.aF8(l),p==="0.5mi"),A.kP(B.Kx,new A.aF9(l),o)],d),0,8)
+p=A.Vc(q===B.bp?A.c([A.kP(B.aGg,new A.aF2(l),p==="500m"),A.kP(B.aGq,new A.aF3(l),p==="1000m"),A.kP(B.Kx,new A.aF6(l),o)],d):A.c([A.kP(B.aGk,new A.aF7(l),p==="0.25mi"),A.kP(B.aGL,new A.aF8(l),p==="0.5mi"),A.kP(B.Kx,new A.aF9(l),o)],d),0,8)
 o=l.d
 o===$&&A.b()
 n=l.r
@@ -100036,7 +100036,7 @@ e=A.d_(A.c([A.w7(B.uJ,g,k),B.bD,A.c2("Icon Size",k,k,k,e.ui(B.fi),k,k)],d),B.J,B
 r=A.c2("Choose icon size used on the map.",k,k,k,r.bS(B.cZ),k,k)
 q=l.y
 q===$&&A.b()
-n=A.qI(new A.b9(B.cr,A.eR(A.c([e,B.dN,r,B.dN,A.Vc(A.c([A.kP(B.aGN,new A.aFb(l),q===16),A.kP(B.aGI,new A.aFc(l),q===24),A.kP(B.aGE,new A.aFd(l),q===32)],d),0,8)],d),B.bW,B.G,B.a4),k),2,k,new A.c6(n,B.p))
+n=A.qI(new A.b9(B.cr,A.eR(A.c([e,B.dN,r,B.dN,A.Vc(A.c([A.kP(B.aGN,new A.aFb(l),q===16),A.kP(B.aGJ,new A.aFc(l),q===24),A.kP(B.aGF,new A.aFd(l),q===32)],d),0,8)],d),B.bW,B.G,B.a4),k),2,k,new A.c6(n,B.p))
 q=A.dF(16)
 r=l.at
 e=j.ch
@@ -100068,7 +100068,7 @@ return a.b===s[a.a]},
 $S:642}
 A.aEV.prototype={
 $1(a){var s=null
-return A.ME(A.c([A.pG(!1,B.eH,s,s,s,s,s,s,new A.aET(a),s,s),A.pG(!1,B.aGD,s,s,s,s,s,s,new A.aEU(a),s,s)],t.p),B.aGX,B.aGA)},
+return A.ME(A.c([A.pG(!1,B.eH,s,s,s,s,s,s,new A.aET(a),s,s),A.pG(!1,B.aGE,s,s,s,s,s,s,new A.aEU(a),s,s)],t.p),B.aGX,B.aGB)},
 $S:643}
 A.aET.prototype={
 $0(){return A.cL(this.a,!1).iR(!1)},
@@ -100474,10 +100474,10 @@ this.aH()},
 J(a){var s,r,q,p,o=this,n=null
 if(o.e)s=o.afn(a)
 else{s=A.aLY(n,B.fm,!1,n,!0,B.I,n,A.aWd(),o.d,n,n,n,n,n,2,B.UT,B.a9,!0,n,!0,n,!1,n,B.dQ,n,n,n,n,n,n,n,n,3,n,n,!1,"\u2022",n,n,n,n,n,!1,n,n,!1,n,!0,n,B.jI,n,n,n,n,n,n,n,n,n,n,n,n,!0,B.aL,n,B.lt,n,n,n,n)
-r=A.OK(B.Up,B.aGw,new A.azT(o),n)
+r=A.OK(B.Up,B.aGx,new A.azT(o),n)
 q=A.aLX(B.hG,B.eH,new A.azU(a))
 p=t.p
-p=A.eR(A.c([B.aGB,B.dh,s,B.dh,r,B.dh,A.d_(A.c([q,B.bD,A.OK(B.U9,B.Ky,o.f?new A.azV(o,a):n,n)],p),B.J,B.hY,B.a4,0)],p),B.J,B.G,B.aO)
+p=A.eR(A.c([B.aGC,B.dh,s,B.dh,r,B.dh,A.d_(A.c([q,B.bD,A.OK(B.U9,B.Ky,o.f?new A.azV(o,a):n,n)],p),B.J,B.hY,B.a4,0)],p),B.J,B.G,B.aO)
 s=p}return A.ea(A.aKx(n,n,new A.b9(B.cr,s,n),n,n,n,B.cr,B.Jj,n,n,n))},
 afn(a){return A.eR(A.c([B.aGe,B.dO,A.i9(new A.Dv(new A.azQ(a),new A.bc("QR",t.B))),B.dO,A.aLX(B.hG,B.eH,new A.azR(this))],t.p),B.J,B.G,B.a4)}}
 A.azX.prototype={
@@ -100517,7 +100517,7 @@ A.xE.prototype={
 J(a){var s=null,r=this.c,q=t.p
 q=A.c([B.aGm,B.dh,A.d_(A.c([A.i9(new A.Fh(r,B.aCE,2,s)),A.mq(s,s,s,B.Uu,s,s,new A.arD(this,a),s,s,s,"Copy to clipboard")],q),B.J,B.G,B.a4,0),B.dh,A.OK(B.uO,B.qD,new A.arE(this),s),B.dh],q)
 if(r.length<=2900)q.push(A.h1(new A.Ed(r,-1,250,s),s,s))
-else q.push(A.h1(B.aGt,s,s))
+else q.push(A.h1(B.aGu,s,s))
 q.push(B.dh)
 q.push(new A.d3(B.m6,s,s,A.aLX(B.hG,B.aGj,new A.arF(a)),s))
 return A.ea(A.aKx(s,s,new A.b9(B.cr,A.eR(q,B.J,B.G,B.aO),s),s,s,s,B.cr,B.Jj,s,s,s))}}
@@ -100656,8 +100656,8 @@ A.agv.prototype={
 $1(a){return new A.tV(new A.agu(this.a,this.b),null)},
 $S:655}
 A.agu.prototype={
-$2(a,b){var s=null,r=this.a,q=t.p,p=A.eR(A.c([B.aGu,B.dh,A.d_(A.c([A.aOS(new A.agr(r,b),r.a),B.SZ],q),B.J,B.G,B.a4,0)],q),B.bW,B.G,B.aO)
-return A.ME(A.c([A.pG(!1,B.eH,s,s,s,s,s,s,new A.ags(a),s,s),A.pG(!1,B.aGs,s,s,s,s,s,s,new A.agt(r,this.b,a),s,s)],q),p,B.aGx)},
+$2(a,b){var s=null,r=this.a,q=t.p,p=A.eR(A.c([B.aGv,B.dh,A.d_(A.c([A.aOS(new A.agr(r,b),r.a),B.SZ],q),B.J,B.G,B.a4,0)],q),B.bW,B.G,B.aO)
+return A.ME(A.c([A.pG(!1,B.eH,s,s,s,s,s,s,new A.ags(a),s,s),A.pG(!1,B.aGs,s,s,s,s,s,s,new A.agt(r,this.b,a),s,s)],q),p,B.aGy)},
 $S:656}
 A.agr.prototype={
 $1(a){this.b.$1(new A.agq(this.a,a))},
@@ -100733,7 +100733,7 @@ J(a){var s=null
 return A.qI(new A.b9(B.Sv,A.fa(this.c,new A.amn(this),s),s),s,B.u4,s)}}
 A.amn.prototype={
 $2(a,b){var s,r=null,q=this.a,p=q.c,o=p.a,n=t.p
-o=A.c([B.aGL,B.dO,B.aGM,B.dO,A.d_(A.c([A.i9(A.kP(B.aGG,new A.aml(q),o===B.dg)),B.bD,A.i9(A.kP(B.aGf,new A.amm(q),o===B.eE))],n),B.J,B.G,B.a4,0),B.dN],n)
+o=A.c([B.aGt,B.dO,B.aGM,B.dO,A.d_(A.c([A.i9(A.kP(B.aGH,new A.aml(q),o===B.dg)),B.bD,A.i9(A.kP(B.aGf,new A.amm(q),o===B.eE))],n),B.J,B.G,B.a4,0),B.dN],n)
 if(p.a===B.dg){s=$.a4h().d
 o.push(new A.x9(p,s===B.bp?$.aZc():$.aZ9(),s,r))}if(p.a===B.eE)o.push(A.d_(A.c([A.mq(r,r,r,B.uN,r,r,p.gaII(),r,r,r,"Undo last point"),B.aAV,A.mq(r,r,r,B.uM,r,r,p.gaHC(),r,r,r,"Reset polygon")],n),B.J,B.hZ,B.a4,0))
 o.push(B.dN)
@@ -100803,7 +100803,7 @@ $S:52}
 A.vr.prototype={
 J(a){var s=this.d,r=A.Y(s).i("a_<1,rl>")
 s=A.X(new A.a_(s,new A.a7i(this,a),r),r.i("a3.E"))
-return A.ea(A.ME(null,A.Vc(s,12,12),B.aGy))}}
+return A.ea(A.ME(null,A.Vc(s,12,12),B.aGz))}}
 A.a7i.prototype={
 $1(a){var s=null,r=a.j(0,this.a.c),q=r?B.m:B.P
 return A.fI(s,A.jI(s,B.w,s,new A.ei(a,s,A.aKa(q,r?3:1),s,s,s,B.j9),32,s,s,32),B.a9,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,new A.a7h(this.b,a),s,s,s,s,s,s)},
@@ -111587,8 +111587,8 @@ B.Yz=s([B.vk,B.Xa,B.Xb,B.Xe,B.Xk,B.Xq,B.Xc,B.Xd,B.Xf,B.Xj,B.Xl,B.Xp,B.Xr,B.Xg,B.
 B.YL=s(["yY","sS","tT","eE","mM"],t.s)
 B.YM=s([-1,0,0,1,0,0,-1,0,1,0,0,0,-1,1,0,1,1,1,1,0],t.n)
 B.YN=s(["C","D","A","T","A","["],t.s)
-B.aGH=new A.bq("Metric (m, km)",null,null,null,null,null,null,null,null)
-B.S_=new A.iV(B.bp,B.aGH,B.cR,null,t.pV)
+B.aGI=new A.bq("Metric (m, km)",null,null,null,null,null,null,null,null)
+B.S_=new A.iV(B.bp,B.aGI,B.cR,null,t.pV)
 B.aGU=new A.bq("Imperial (ft, mi)",null,null,null,null,null,null,null,null)
 B.RZ=new A.iV(B.du,B.aGU,B.cR,null,t.pV)
 B.YO=s([B.S_,B.RZ],A.ac("G<iV<ld>>"))
@@ -115739,18 +115739,18 @@ B.K5=new A.lx(5,"timeout")
 B.aB4=new A.xN(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aGp=new A.bq("Copied to clipboard",null,null,null,null,null,null,null,null)
 B.aB5=new A.iu(B.aGp,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
-B.aGC=new A.bq("Fetching station locations failed! Please try again!",null,null,null,null,null,null,null,null)
-B.aB6=new A.iu(B.aGC,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
-B.aGJ=new A.bq("Fetching locations failed! Please try again!",null,null,null,null,null,null,null,null)
-B.aB7=new A.iu(B.aGJ,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
+B.aGD=new A.bq("Fetching station locations failed! Please try again!",null,null,null,null,null,null,null,null)
+B.aB6=new A.iu(B.aGD,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
+B.aGK=new A.bq("Fetching locations failed! Please try again!",null,null,null,null,null,null,null,null)
+B.aB7=new A.iu(B.aGK,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
 B.aGV=new A.bq("Settings saved!",null,null,null,null,null,null,null,null)
 B.aB8=new A.iu(B.aGV,null,null,null,null,null,null,null,null,null,null,null,null,B.d1,null,null,null,B.I,null)
 B.aGS=new A.bq("Set play zone first!",null,null,null,null,null,null,null,null)
 B.aB9=new A.iu(B.aGS,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
-B.aGz=new A.bq("Import failed!",null,null,null,null,null,null,null,null)
-B.K6=new A.iu(B.aGz,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
-B.aGv=new A.bq("Fetching borders failed! Please try again!",null,null,null,null,null,null,null,null)
-B.aBa=new A.iu(B.aGv,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
+B.aGA=new A.bq("Import failed!",null,null,null,null,null,null,null,null)
+B.K6=new A.iu(B.aGA,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
+B.aGw=new A.bq("Fetching borders failed! Please try again!",null,null,null,null,null,null,null,null)
+B.aBa=new A.iu(B.aGw,null,null,null,null,null,null,null,null,null,null,null,null,B.e0,null,null,null,B.I,null)
 B.K7=new A.FJ(0,"permissive")
 B.aBb=new A.FJ(1,"normal")
 B.aBc=new A.FJ(2,"forced")
@@ -116139,22 +116139,22 @@ B.aGn=new A.bq("Reset Game",null,null,null,null,null,null,null,null)
 B.aGq=new A.bq("1000 m",null,null,null,null,null,null,null,null)
 B.aGr=new A.bq("Reset",null,B.Ku,null,null,null,null,null,null)
 B.aGs=new A.bq("Enable",null,null,null,null,null,null,null,null)
+B.aGt=new A.bq("Select Play Zone - Hello World!",null,B.qC,null,null,null,null,null,null)
 B.aD7=new A.A(!0,null,null,null,null,null,25,B.cd,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aGt=new A.bq("Game File to big for QR Code",null,B.aD7,null,null,null,null,null,null)
-B.aGu=new A.bq("Enabling Bus Stops can significantly impact performance. \nThis feature is not recommended for large play areas.",null,null,null,null,null,null,null,null)
+B.aGu=new A.bq("Game File to big for QR Code",null,B.aD7,null,null,null,null,null,null)
+B.aGv=new A.bq("Enabling Bus Stops can significantly impact performance. \nThis feature is not recommended for large play areas.",null,null,null,null,null,null,null,null)
 B.eH=new A.bq("Cancel",null,null,null,null,null,null,null,null)
-B.aGw=new A.bq("Scan QR Code",null,null,null,null,null,null,null,null)
-B.aGx=new A.bq("Performance Warning",null,null,null,null,null,null,null,null)
-B.aGy=new A.bq("Pick a color",null,null,null,null,null,null,null,null)
-B.aGA=new A.bq("Discard changes?",null,null,null,null,null,null,null,null)
-B.aGB=new A.bq("Import Game State",null,B.Kw,null,null,null,null,null,null)
-B.aGD=new A.bq("Discard",null,null,null,null,null,null,null,null)
-B.aGE=new A.bq("Large",null,null,null,null,null,null,null,null)
-B.aGF=new A.bq("Do you really want to reset everything? This cannot be undone.",null,null,null,null,null,null,null,null)
-B.aGG=new A.bq("Circle",null,null,null,null,null,null,null,null)
-B.aGI=new A.bq("Medium",null,null,null,null,null,null,null,null)
-B.aGK=new A.bq("0.5 mi",null,null,null,null,null,null,null,null)
-B.aGL=new A.bq("Select Play Zone",null,B.qC,null,null,null,null,null,null)
+B.aGx=new A.bq("Scan QR Code",null,null,null,null,null,null,null,null)
+B.aGy=new A.bq("Performance Warning",null,null,null,null,null,null,null,null)
+B.aGz=new A.bq("Pick a color",null,null,null,null,null,null,null,null)
+B.aGB=new A.bq("Discard changes?",null,null,null,null,null,null,null,null)
+B.aGC=new A.bq("Import Game State",null,B.Kw,null,null,null,null,null,null)
+B.aGE=new A.bq("Discard",null,null,null,null,null,null,null,null)
+B.aGF=new A.bq("Large",null,null,null,null,null,null,null,null)
+B.aGG=new A.bq("Do you really want to reset everything? This cannot be undone.",null,null,null,null,null,null,null,null)
+B.aGH=new A.bq("Circle",null,null,null,null,null,null,null,null)
+B.aGJ=new A.bq("Medium",null,null,null,null,null,null,null,null)
+B.aGL=new A.bq("0.5 mi",null,null,null,null,null,null,null,null)
 B.aGM=new A.bq("Tap map to set points. Drag marker to adjust.",null,null,null,null,null,null,null,null)
 B.aGN=new A.bq("Small",null,null,null,null,null,null,null,null)
 B.aGO=new A.bq("Confirm Play Area",null,null,null,null,null,null,null,null)
