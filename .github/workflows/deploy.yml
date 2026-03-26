@@ -1,0 +1,28 @@
+name: Deploy Flutter Web to GitHub Pages
+
+on:
+  push:
+    branches: [ release/web ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.3'
+
+      - run: flutter build web --release --base-href /hide_and_map/
+
+      # Inject the API key into index.html (replace placeholder)
+      - name: Inject Google Maps API Key
+        run: |
+          sed -i "s|__GOOGLE_MAPS_API_KEY__|${{ secrets.GOOGLE_MAPS_API_KEY }}|g" build/web/index.html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_PAGES_PAT }}
+          publish_dir: ./build/web
