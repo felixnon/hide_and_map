@@ -183,13 +183,6 @@ class MapFeaturesPanel extends StatelessWidget {
               icon: const Icon(Icons.train_outlined, color: Colors.indigo),
             ),
             _buildStationTile(
-              title: 'Train Stops',
-              value: controller.showTrainStops,
-              isLoading: controller.isFetchingTrainStops,
-              onChanged: (v) => controller.toggleStationType(StationType.trainStop, v),
-              icon: const Icon(Icons.train_outlined, color: Color(0xFF7B68EE)),
-            ),
-            _buildStationTile(
               title: 'Subway Stations',
               value: controller.showSubwayStations,
               isLoading: controller.isFetchingSubwayStations,

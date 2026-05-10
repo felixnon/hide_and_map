@@ -204,8 +204,6 @@ class FeatureMarkerProvider extends ChangeNotifier {
     switch (type) {
       case StationType.trainStation:
         return icons.trainStationIcon;
-      case StationType.trainStop:
-        return icons.trainStopIcon;
       case StationType.subway:
         return icons.subwayIcon;
       case StationType.tram:

@@ -96,12 +96,9 @@ class FeatureFetcher {
   static Future<List<Station>> fetchTrainStations(List<LatLng> boundary) =>
       _fetchStations(
         boundary,
-        'nwr["railway"="station"]["station"!="subway"]',
+        'nwr["railway"~"^(station|halt)\$"]["station"!="subway"]',
         StationType.trainStation,
       );
-
-  static Future<List<Station>> fetchTrainStops(List<LatLng> boundary) =>
-      _fetchStations(boundary, 'nwr["railway"="halt"]', StationType.trainStop);
 
   static Future<List<Station>> fetchSubwayStations(List<LatLng> boundary) =>
       _fetchStations(boundary, 'nwr["station"="subway"]', StationType.subway);

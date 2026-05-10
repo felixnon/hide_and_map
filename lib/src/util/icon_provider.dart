@@ -9,7 +9,6 @@ class IconProvider {
   IconProvider._internal();
 
   late BitmapDescriptor trainStationIcon;
-  late BitmapDescriptor trainStopIcon;
   late BitmapDescriptor subwayIcon;
   late BitmapDescriptor tramIcon;
   late BitmapDescriptor busIcon;
@@ -44,10 +43,6 @@ class IconProvider {
     trainStationIcon = await BitmapDescriptor.asset(
       ImageConfiguration(size: _iconSize),
       'assets/markers/train_station_marker.png',
-    );
-    trainStopIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/train_stop_marker.png',
     );
     subwayIcon = await BitmapDescriptor.asset(
       ImageConfiguration(size: _iconSize),
