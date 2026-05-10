@@ -211,7 +211,7 @@ class MapFeaturesPanel extends StatelessWidget {
               icon: const Icon(Icons.directions_bus_outlined, color: Color(0xFFDA70D6)),
             ),
             _buildStationTile(
-              title: 'Ferry Stops',
+              title: 'Ferry Terminals',
               value: controller.showFerryStops,
               isLoading: controller.isFetchingFerryStops,
               onChanged: (v) => controller.toggleStationType(StationType.ferry, v),
