@@ -42,7 +42,6 @@ class MapFeaturesController extends ChangeNotifier {
 
   final Map<StationType, StationState> _stationStates = {
     StationType.trainStation: StationState(),
-    StationType.trainStop: StationState(),
     StationType.subway: StationState(),
     StationType.tram: StationState(),
     StationType.bus: StationState(),
@@ -91,7 +90,6 @@ class MapFeaturesController extends ChangeNotifier {
   }
 
   bool get showTrainStations => _stationStates[StationType.trainStation]!.visible;
-  bool get showTrainStops => _stationStates[StationType.trainStop]!.visible;
   bool get showSubwayStations => _stationStates[StationType.subway]!.visible;
   bool get showTramStops => _stationStates[StationType.tram]!.visible;
   bool get showBusStops => _stationStates[StationType.bus]!.visible;
@@ -126,7 +124,6 @@ class MapFeaturesController extends ChangeNotifier {
   bool get isFetchingOverlays => _overlayStates.values.any((state) => state.fetching);
 
   bool get isFetchingTrainStations => _stationStates[StationType.trainStation]!.fetching;
-  bool get isFetchingTrainStops => _stationStates[StationType.trainStop]!.fetching;
   bool get isFetchingSubwayStations => _stationStates[StationType.subway]!.fetching;
   bool get isFetchingTramStops => _stationStates[StationType.tram]!.fetching;
   bool get isFetchingBusStops => _stationStates[StationType.bus]!.fetching;
@@ -218,7 +215,6 @@ class MapFeaturesController extends ChangeNotifier {
   ) {
     return switch (type) {
       StationType.trainStation => FeatureFetcher.fetchTrainStations,
-      StationType.trainStop => FeatureFetcher.fetchTrainStops,
       StationType.subway => FeatureFetcher.fetchSubwayStations,
       StationType.tram => FeatureFetcher.fetchTramStops,
       StationType.bus => FeatureFetcher.fetchBusStops,

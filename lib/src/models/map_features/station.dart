@@ -1,7 +1,7 @@
 import 'package:google_maps_cluster_manager_2/google_maps_cluster_manager_2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-enum StationType { trainStation, trainStop, subway, tram, bus, ferry }
+enum StationType { trainStation, subway, tram, bus, ferry }
 
 class Station with ClusterItem {
   final String id;
