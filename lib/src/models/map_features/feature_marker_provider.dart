@@ -11,15 +11,8 @@ import '../../util/geo_math.dart';
 import '../../util/location_provider.dart';
 import 'map_poi.dart';
 import 'map_overlay.dart';
+import 'poi_categories.dart';
 import 'station.dart';
-
-class PoiConfig {
-  final POIType type;
-  final Color color;
-  final BitmapDescriptor Function() icon;
-
-  const PoiConfig({required this.type, required this.color, required this.icon});
-}
 
 class FeatureMarkerProvider extends ChangeNotifier {
   final void Function(LatLng point, MarkerId markerId) _onMarkerTap;
@@ -41,60 +34,12 @@ class FeatureMarkerProvider extends ChangeNotifier {
   late ClusterManager<Station> _stationClusterManager;
   Set<Marker> _stationMarkers = {};
 
-  final Map<POIType, ClusterManager<MapPOI>> _poiManagers = {};
-  final Map<POIType, Set<Marker>> _poiMarkers = {};
+  final Map<PoiCategory, ClusterManager<MapPOI>> _poiManagers = {};
+  final Map<PoiCategory, Set<Marker>> _poiMarkers = {};
 
   FeatureMarkerProvider(this._onMarkerTap, this._onOverlayTap) {
     init();
   }
-
-  final Map<POIType, PoiConfig> _poiConfigs = {
-    POIType.themePark: PoiConfig(
-      type: POIType.themePark,
-      color: const Color(0xFFFF6F00),
-      icon: () => icons.themeParkIcon,
-    ),
-    POIType.zoo: PoiConfig(
-      type: POIType.zoo,
-      color: const Color(0xFF43A047),
-      icon: () => icons.zooIcon,
-    ),
-    POIType.aquarium: PoiConfig(
-      type: POIType.aquarium,
-      color: const Color(0xFF3949AB),
-      icon: () => icons.aquariumIcon,
-    ),
-    POIType.golfCourse: PoiConfig(
-      type: POIType.golfCourse,
-      color: const Color(0xFF7CB342),
-      icon: () => icons.golfIcon,
-    ),
-    POIType.museum: PoiConfig(
-      type: POIType.museum,
-      color: const Color(0xFF8E24AA),
-      icon: () => icons.museumIcon,
-    ),
-    POIType.movieTheater: PoiConfig(
-      type: POIType.movieTheater,
-      color: const Color(0xFFD81B60),
-      icon: () => icons.cinemaIcon,
-    ),
-    POIType.hospital: PoiConfig(
-      type: POIType.hospital,
-      color: const Color(0xFFC62828),
-      icon: () => icons.hospitalIcon,
-    ),
-    POIType.library: PoiConfig(
-      type: POIType.library,
-      color: const Color(0xFFFBC02D),
-      icon: () => icons.libraryIcon,
-    ),
-    POIType.consulate: PoiConfig(
-      type: POIType.consulate,
-      color: const Color(0xFF0097A7),
-      icon: () => icons.consulateIcon,
-    ),
-  };
 
   void init() async {
     _stationClusterManager = _createClusterManager<Station>(
@@ -106,14 +51,14 @@ class FeatureMarkerProvider extends ChangeNotifier {
       markerBuilder: _getStationMarkerBuilder(),
     );
 
-    for (final config in _poiConfigs.values) {
-      _poiManagers[config.type] = _createClusterManager<MapPOI>(
+    for (final cat in kPoiCategories) {
+      _poiManagers[cat] = _createClusterManager<MapPOI>(
         items: [],
         onMarkersUpdated: (markers) {
-          _poiMarkers[config.type] = markers;
+          _poiMarkers[cat] = markers;
           notifyListeners();
         },
-        markerBuilder: _getPoiMarkerBuilder(config),
+        markerBuilder: _getPoiMarkerBuilder(cat),
       );
     }
 
@@ -162,11 +107,11 @@ class FeatureMarkerProvider extends ChangeNotifier {
         );
       };
 
-  Future<Marker> Function(Cluster<MapPOI>) _getPoiMarkerBuilder(PoiConfig config) =>
+  Future<Marker> Function(Cluster<MapPOI>) _getPoiMarkerBuilder(PoiCategory category) =>
       (cluster) async {
         if (!cluster.isMultiple) {
-          _addPolygon(cluster.items.first, config.color);
-          return _buildPoiMarker(cluster.items.first, config.icon());
+          _addPolygon(cluster.items.first);
+          return _buildPoiMarker(cluster.items.first, icons.poiIcons[category.id]!);
         }
 
         final markerId = MarkerId(cluster.getId());
@@ -174,7 +119,7 @@ class FeatureMarkerProvider extends ChangeNotifier {
           markerId: markerId,
           position: cluster.location,
           anchor: const Offset(0.5, 0.5),
-          icon: await _getMarkerBitmap(60, config.color, text: cluster.count.toString()),
+          icon: await _getMarkerBitmap(60, category.color, text: cluster.count.toString()),
           consumeTapEvents: true,
           onTap: () => _onMarkerTap(cluster.location, markerId),
         );
@@ -224,7 +169,7 @@ class FeatureMarkerProvider extends ChangeNotifier {
           ' (${GeoMath.toDistanceString(GeoMath.distanceInMeters(LocationProvider.lastLocation, poi.center))})';
     }
 
-    final markerId = MarkerId('${poi.type.name}_${poi.id}');
+    final markerId = MarkerId('${poi.category.id}_${poi.id}');
     return Marker(
       markerId: markerId,
       position: poi.center,
@@ -285,12 +230,13 @@ class FeatureMarkerProvider extends ChangeNotifier {
     );
   }
 
-  void _addPolygon(MapPOI poi, Color color) {
+  void _addPolygon(MapPOI poi) {
     if (poi.boundary == null || poi.boundary!.isEmpty) return;
 
+    final color = poi.category.color;
     _polygons.add(
       Polygon(
-        polygonId: PolygonId('${poi.type.name}_${poi.id}'),
+        polygonId: PolygonId('${poi.category.id}_${poi.id}'),
         points: poi.boundary!,
         strokeWidth: 2,
         strokeColor: color,
@@ -318,12 +264,12 @@ class FeatureMarkerProvider extends ChangeNotifier {
     _stationClusterManager.setItems(stations);
   }
 
-  void setPOIs(POIType type, List<MapPOI> items) {
+  void setPOIs(PoiCategory category, List<MapPOI> items) {
     dataChanged = true;
-    _poiManagers[type]?.setItems(items);
+    _poiManagers[category]?.setItems(items);
 
     if (items.isEmpty) {
-      _polygons.removeWhere((p) => p.mapsId.value.startsWith(type.name));
+      _polygons.removeWhere((p) => p.mapsId.value.startsWith(category.id));
     }
   }
 

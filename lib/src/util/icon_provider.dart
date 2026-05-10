@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../main.dart';
+import '../models/map_features/poi_categories.dart';
 
 class IconProvider {
   static final IconProvider _instance = IconProvider._internal();
@@ -13,15 +14,8 @@ class IconProvider {
   late BitmapDescriptor tramIcon;
   late BitmapDescriptor busIcon;
   late BitmapDescriptor ferryIcon;
-  late BitmapDescriptor themeParkIcon;
-  late BitmapDescriptor zooIcon;
-  late BitmapDescriptor aquariumIcon;
-  late BitmapDescriptor golfIcon;
-  late BitmapDescriptor museumIcon;
-  late BitmapDescriptor cinemaIcon;
-  late BitmapDescriptor hospitalIcon;
-  late BitmapDescriptor libraryIcon;
-  late BitmapDescriptor consulateIcon;
+
+  late Map<String, BitmapDescriptor> poiIcons;
 
   late BitmapDescriptor webLocationIcon;
   late Map<int, BitmapDescriptor> timerIcons;
@@ -60,42 +54,14 @@ class IconProvider {
       ImageConfiguration(size: _iconSize),
       'assets/markers/ferry_stop_marker.png',
     );
-    themeParkIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/theme_park_marker.png',
-    );
-    zooIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/zoo_marker.png',
-    );
-    aquariumIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/aquarium_marker.png',
-    );
-    golfIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/golf_marker.png',
-    );
-    museumIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/museum_marker.png',
-    );
-    cinemaIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/cinema_marker.png',
-    );
-    hospitalIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/hospital_marker.png',
-    );
-    libraryIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/library_marker.png',
-    );
-    consulateIcon = await BitmapDescriptor.asset(
-      ImageConfiguration(size: _iconSize),
-      'assets/markers/consulate_marker.png',
-    );
+
+    poiIcons = {
+      for (final cat in kPoiCategories)
+        cat.id: await BitmapDescriptor.asset(
+          ImageConfiguration(size: _iconSize),
+          cat.markerAsset,
+        ),
+    };
 
     webLocationIcon = await BitmapDescriptor.asset(
       ImageConfiguration(size: _iconSize),

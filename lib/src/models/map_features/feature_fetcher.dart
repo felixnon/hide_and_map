@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'map_poi.dart';
 import 'map_overlay.dart';
+import 'poi_categories.dart';
 import 'station.dart';
 
 class FeatureFetcher {
@@ -131,41 +132,10 @@ class FeatureFetcher {
         type,
       );
 
-  static Future<List<MapPOI>> _fetchPOIs(
-    List<LatLng> boundary,
-    String filter,
-    POIType type,
-  ) {
-    return _fetchAndParse(boundary, filter, (e) => MapPOI.fromOverpassElement(type, e));
-  }
-
-  static Future<List<MapPOI>> fetchThemeParks(List<LatLng> boundary) =>
-      _fetchPOIs(boundary, 'nwr["tourism"="theme_park"]', POIType.themePark);
-
-  static Future<List<MapPOI>> fetchZoos(List<LatLng> boundary) =>
-      _fetchPOIs(boundary, 'nwr["tourism"="zoo"]', POIType.zoo);
-
-  static Future<List<MapPOI>> fetchAquariums(List<LatLng> boundary) =>
-      _fetchPOIs(boundary, 'nwr["tourism"="aquarium"]', POIType.aquarium);
-
-  static Future<List<MapPOI>> fetchGolfCourses(List<LatLng> boundary) =>
-      _fetchPOIs(boundary, 'nwr["leisure"="golf_course"]', POIType.golfCourse);
-
-  static Future<List<MapPOI>> fetchMuseums(List<LatLng> boundary) =>
-      _fetchPOIs(boundary, 'nwr["tourism"="museum"]', POIType.museum);
-
-  static Future<List<MapPOI>> fetchMovieTheaters(List<LatLng> boundary) =>
-      _fetchPOIs(boundary, 'nwr["amenity"="cinema"]', POIType.movieTheater);
-
-  static Future<List<MapPOI>> fetchHospitals(List<LatLng> boundary) =>
-      _fetchPOIs(boundary, 'nwr["amenity"="hospital"]', POIType.hospital);
-
-  static Future<List<MapPOI>> fetchLibraries(List<LatLng> boundary) =>
-      _fetchPOIs(boundary, 'nwr["amenity"="library"]', POIType.library);
-
-  static Future<List<MapPOI>> fetchConsulates(List<LatLng> boundary) => _fetchPOIs(
-    boundary,
-    'nwr["diplomatic"="consulate"]["consulate"!="honorary_consul"]["consulate"!="honorary_consulate"]',
-    POIType.consulate,
-  );
+  static Future<List<MapPOI>> fetchPois(PoiCategory category, List<LatLng> boundary) =>
+      _fetchAndParse(
+        boundary,
+        category.overpassFilter,
+        (e) => MapPOI.fromOverpassElement(category, e),
+      );
 }
