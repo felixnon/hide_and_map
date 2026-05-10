@@ -8,17 +8,37 @@ import 'map_overlay.dart';
 import 'station.dart';
 
 class FeatureFetcher {
-  static const String _overpassUrl = 'https://overpass-api.de/api/interpreter';
+  static const List<String> _overpassUrls = [
+    'https://overpass-api.de/api/interpreter',
+    'https://overpass.kumi.systems/api/interpreter',
+  ];
+  static const int _attemptsPerEndpoint = 2;
+  static const Duration _requestTimeout = Duration(seconds: 60);
 
   static Future<List<Map<String, dynamic>>> _fetchElements(String query) async {
-    final response = await http.post(Uri.parse(_overpassUrl), body: {'data': query});
+    Object? lastError;
 
-    if (response.statusCode != 200) {
-      throw Exception('Overpass API error: ${response.statusCode}');
+    for (final url in _overpassUrls) {
+      for (var attempt = 1; attempt <= _attemptsPerEndpoint; attempt++) {
+        try {
+          final response = await http
+              .post(Uri.parse(url), body: {'data': query})
+              .timeout(_requestTimeout);
+
+          if (response.statusCode != 200) {
+            throw Exception('Overpass API error: ${response.statusCode}');
+          }
+
+          final json = jsonDecode(response.body);
+          return (json['elements'] as List<dynamic>? ?? []).cast<Map<String, dynamic>>();
+        } catch (e) {
+          lastError = e;
+          log('Overpass request to $url failed (attempt $attempt/$_attemptsPerEndpoint): $e');
+        }
+      }
     }
 
-    final json = jsonDecode(response.body);
-    return (json['elements'] as List<dynamic>? ?? []).cast<Map<String, dynamic>>();
+    throw Exception('All Overpass endpoints failed. Last error: $lastError');
   }
 
   static String _polygon(List<LatLng> boundary) =>
