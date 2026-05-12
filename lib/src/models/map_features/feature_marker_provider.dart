@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart'
 import '../../../main.dart';
 import '../../util/geo_math.dart';
 import '../../util/location_provider.dart';
+import '../../util/station_grouper.dart';
 import 'map_poi.dart';
 import 'map_overlay.dart';
 import 'poi_categories.dart';
@@ -33,6 +34,7 @@ class FeatureMarkerProvider extends ChangeNotifier {
 
   late ClusterManager<Station> _stationClusterManager;
   Set<Marker> _stationMarkers = {};
+  Map<String, StationGroup> _hidingZoneGroupByStationId = {};
 
   final Map<PoiCategory, ClusterManager<MapPOI>> _poiManagers = {};
   final Map<PoiCategory, Set<Marker>> _poiMarkers = {};
@@ -214,14 +216,16 @@ class FeatureMarkerProvider extends ChangeNotifier {
   void _addCircle(Station station) {
     if (!_hidingZonesVisible) return;
 
-    if (_circles.any((c) => GeoMath.distanceInMeters(c.center, station.location) < 316)) {
-      return;
-    }
+    final group = _hidingZoneGroupByStationId[station.id];
+    if (group == null) return;
+
+    final circleId = CircleId('zone_${group.id}');
+    if (_circles.any((c) => c.circleId == circleId)) return;
 
     _circles.add(
       Circle(
-        circleId: CircleId('zone_${station.id}'),
-        center: station.location,
+        circleId: circleId,
+        center: group.centroid,
         radius: _hidingZoneSize,
         fillColor: Colors.teal.withAlpha(20),
         strokeColor: Colors.teal.withAlpha(100),
@@ -261,6 +265,10 @@ class FeatureMarkerProvider extends ChangeNotifier {
   void setStations(List<Station> stations) {
     dataChanged = true;
     _circles.clear();
+    _hidingZoneGroupByStationId = {
+      for (final group in StationGrouper.group(stations))
+        for (final s in group.stations) s.id: group,
+    };
     _stationClusterManager.setItems(stations);
   }
 
