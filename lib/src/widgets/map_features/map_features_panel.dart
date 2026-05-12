@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import '../../models/map_features/map_features_controller.dart';
-import '../../models/map_features/map_poi.dart';
 import '../../models/map_features/map_overlay.dart';
+import '../../models/map_features/poi_categories.dart';
 import '../../models/map_features/station.dart';
 import '../../screens/settings_screen.dart';
 
@@ -41,87 +41,7 @@ class MapFeaturesPanel extends StatelessWidget {
 
                   const Divider(height: 24, thickness: 1),
 
-                  _buildPoiTile(
-                    theme: theme,
-                    icon: Icons.attractions,
-                    title: 'Theme Parks',
-                    color: const Color(0xFFFF6F00),
-                    value: controller.showThemeParks,
-                    isLoading: controller.isFetchingThemeParks,
-                    onChanged: (b) => controller.togglePoi(POIType.themePark, b),
-                  ),
-                  _buildPoiTile(
-                    theme: theme,
-                    icon: Icons.pets,
-                    title: 'Zoos',
-                    color: const Color(0xFF43A047),
-                    value: controller.showZoos,
-                    isLoading: controller.isFetchingZoos,
-                    onChanged: (b) => controller.togglePoi(POIType.zoo, b),
-                  ),
-                  _buildPoiTile(
-                    theme: theme,
-                    icon: Icons.water,
-                    title: 'Aquariums',
-                    color: const Color(0xFF3949AB),
-                    value: controller.showAquariums,
-                    isLoading: controller.isFetchingAquariums,
-                    onChanged: (b) => controller.togglePoi(POIType.aquarium, b),
-                  ),
-                  _buildPoiTile(
-                    theme: theme,
-                    icon: Icons.golf_course,
-                    title: 'Golf Courses',
-                    color: const Color(0xFF7CB342),
-                    value: controller.showGolfCourses,
-                    isLoading: controller.isFetchingGolfCourses,
-                    onChanged: (b) => controller.togglePoi(POIType.golfCourse, b),
-                  ),
-                  _buildPoiTile(
-                    theme: theme,
-                    icon: Icons.museum,
-                    title: 'Museums',
-                    color: const Color(0xFF8E24AA),
-                    value: controller.showMuseums,
-                    isLoading: controller.isFetchingMuseums,
-                    onChanged: (b) => controller.togglePoi(POIType.museum, b),
-                  ),
-                  _buildPoiTile(
-                    theme: theme,
-                    icon: Icons.movie,
-                    title: 'Movie Theaters',
-                    color: const Color(0xFFD81B60),
-                    value: controller.showMovieTheaters,
-                    isLoading: controller.isFetchingMovieTheaters,
-                    onChanged: (b) => controller.togglePoi(POIType.movieTheater, b),
-                  ),
-                  _buildPoiTile(
-                    theme: theme,
-                    icon: Icons.emergency,
-                    title: 'Hospitals',
-                    color: const Color(0xFFC62828),
-                    value: controller.showHospitals,
-                    isLoading: controller.isFetchingHospitals,
-                    onChanged: (b) => controller.togglePoi(POIType.hospital, b),
-                  ),
-                  _buildPoiTile(
-                    theme: theme,
-                    icon: Icons.local_library,
-                    title: 'Libraries',
-                    color: const Color(0xFFFBC02D),
-                    value: controller.showLibraries,
-                    isLoading: controller.isFetchingLibraries,
-                    onChanged: (b) => controller.togglePoi(POIType.library, b),
-                  ),
-                  _buildPoiTile(
-                    theme: theme,
-                    icon: Icons.flag,
-                    title: 'Consulates',
-                    color: const Color(0xFF0097A7),
-                    value: controller.showConsulates,
-                    isLoading: controller.isFetchingConsulates,
-                    onChanged: (b) => controller.togglePoi(POIType.consulate, b),
-                  ),
+                  for (final category in kPoiCategories) _buildPoiTile(category),
 
                   const Divider(height: 32, thickness: 1),
                   Text(
@@ -433,15 +353,11 @@ class MapFeaturesPanel extends StatelessWidget {
     );
   }
 
-  Widget _buildPoiTile({
-    required ThemeData theme,
-    required IconData icon,
-    required String title,
-    required Color color,
-    required bool value,
-    required bool isLoading,
-    required ValueChanged<bool> onChanged,
-  }) {
+  Widget _buildPoiTile(PoiCategory category) {
+    final value = controller.isPoiVisible(category);
+    final isLoading = controller.isPoiFetching(category);
+    onChanged(bool b) => controller.togglePoi(category, b);
+
     return Card(
       elevation: 1,
       margin: const EdgeInsets.symmetric(vertical: 6),
@@ -449,8 +365,8 @@ class MapFeaturesPanel extends StatelessWidget {
       child: ListTile(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         contentPadding: const EdgeInsets.only(left: 16, right: 16),
-        leading: Icon(icon, color: color),
-        title: Text(title, style: const TextStyle(fontSize: 16)),
+        leading: Icon(category.panelIcon, color: category.color),
+        title: Text(category.title, style: const TextStyle(fontSize: 16)),
         onTap: () => onChanged(!value),
         trailing: isLoading
             ? Padding(
@@ -461,7 +377,7 @@ class MapFeaturesPanel extends StatelessWidget {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               )
-            : Switch(value: value, onChanged: onChanged, activeTrackColor: color),
+            : Switch(value: value, onChanged: onChanged, activeTrackColor: category.color),
       ),
     );
   }
