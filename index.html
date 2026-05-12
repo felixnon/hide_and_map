@@ -32,18 +32,23 @@
   <title>Hide and Map</title>
   <link rel="manifest" href="manifest.json">
 
-  <!-- Google Maps API injection -->
+  <!--
+    The AIzaSyBqUfLxK3tiU5p3C-5Mmnd6PPAJCqUTGjc placeholder is replaced at build time by the
+    GitHub Actions workflow with the value of the GOOGLE_MAPS_API_KEY secret.
+    For local development this file is replaced on the master branch with a
+    version that fetches the key from web/secret_config.json at runtime.
+  -->
   <script>
     (function() {
-      var key = "AIzaSyAyeD7I1hE-bwdb7zF4PcFYXs-O-7HTbUg"; // placeholder, replaced at build time
-      if (key) {
+      var key = "AIzaSyBqUfLxK3tiU5p3C-5Mmnd6PPAJCqUTGjc";
+      if (key && key.indexOf("__") !== 0) {
         var s = document.createElement('script');
         s.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key);
         s.async = true;
         s.defer = true;
         document.head.appendChild(s);
       } else {
-        console.warn('No API key provided, Google Maps will not load.');
+        console.warn('No API key injected, Google Maps will not load.');
       }
     })();
   </script>
