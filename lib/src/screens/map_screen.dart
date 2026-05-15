@@ -19,6 +19,7 @@ import '../models/shape/shape_factory.dart';
 import '../util/color_helper.dart';
 import '../util/location_provider.dart';
 import '../util/polygon_simplifier.dart';
+import '../util/share_url.dart';
 import '../widgets/import_export/import_dialog.dart';
 import '../widgets/import_export/share_dialog.dart';
 import '../widgets/map_features/map_features_panel.dart';
@@ -85,6 +86,19 @@ class _MapScreenState extends State<MapScreen> {
         if (gS.playArea != null) {_loadGameState(gS)},
       },
     );
+
+    // After the first frame, check whether the app was opened via a share URL
+    // (e.g. https://.../?d=<code>) and offer to import.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _maybeImportFromLaunchUrl();
+    });
+  }
+
+  void _maybeImportFromLaunchUrl() {
+    if (!mounted) return;
+    final code = Uri.base.queryParameters[ShareUrl.paramName];
+    if (code == null || code.isEmpty) return;
+    _confirmAndImportGameState(code, context);
   }
 
   void _loadGameState(GameState gS) {
@@ -276,10 +290,10 @@ class _MapScreenState extends State<MapScreen> {
                     ).then((imported) => {_decodeImport(imported, context)});
                     break;
                   case 'share':
-                    final encoded = gameState.encodeGameState();
+                    final encoded = gameState.encodeGameStateUrlSafe();
                     showDialog(
                       context: context,
-                      builder: (_) => ShareDialog(base64String: encoded),
+                      builder: (_) => ShareDialog(urlSafeCode: encoded),
                     );
                     break;
                   case 'reset':
@@ -546,45 +560,94 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _decodeImport(String? imported, BuildContext context) {
-    if (imported != null && imported.isNotEmpty) {
-      if (imported.startsWith('{')) {
-        if (gameState.playArea == null) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text("Set play zone first!")));
-          return;
-        }
-        try {
-          final Shape shape = ShapeFactory.fromJson(jsonDecode(imported));
-          if (gameState.shapes.any((element) => element.id == shape.id)) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("This ${shape.type.name} is already there!")),
-            );
-            return;
-          }
-          setState(() {
-            gameState.shapes.add(shape);
-          });
-          GameState.saveGameState(gameState);
-        } catch (e) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text("Import failed!")));
-          return;
-        }
-      } else {
-        final gS = GameState.decodeGameState(imported);
-        if (gS.playArea != null) {
-          _loadGameState(gS);
-          _animateToPlayArea();
-        } else {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text("Import failed!")));
-        }
+    if (imported == null || imported.isEmpty) return;
+
+    // Single-shape JSON import — additive, no confirmation needed.
+    if (imported.startsWith('{')) {
+      if (gameState.playArea == null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Set play zone first!")));
+        return;
       }
+      try {
+        final Shape shape = ShapeFactory.fromJson(jsonDecode(imported));
+        if (gameState.shapes.any((element) => element.id == shape.id)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("This ${shape.type.name} is already there!")),
+          );
+          return;
+        }
+        setState(() {
+          gameState.shapes.add(shape);
+        });
+        GameState.saveGameState(gameState);
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Import failed!")));
+      }
+      return;
     }
+
+    // Full game state import. Accepts either a raw code or a share URL.
+    final code = ShareUrl.extractCode(imported) ?? imported;
+    _confirmAndImportGameState(code, context);
   }
+
+  /// Decode [code], show a confirmation dialog, then replace the game state.
+  Future<void> _confirmAndImportGameState(
+    String code,
+    BuildContext context,
+  ) async {
+    final incoming = GameState.decodeGameState(code);
+    if (incoming.playArea == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Import failed!")));
+      return;
+    }
+
+    final currentShapes = gameState.shapes.length;
+    final currentHasArea = gameState.playArea != null;
+    final incomingShapes = incoming.shapes.length;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogCtx) => PointerInterceptor(
+        child: AlertDialog(
+          title: const Text("Import shared game?"),
+          content: Text(
+            currentHasArea
+                ? "This will replace your current game "
+                      "(${_shapeWord(currentShapes)}) "
+                      "with the shared game (${_shapeWord(incomingShapes)})."
+                : "Load the shared game (${_shapeWord(incomingShapes)})?",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogCtx).pop(false),
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.check),
+              label: const Text("Import"),
+              onPressed: () => Navigator.of(dialogCtx).pop(true),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (confirmed != true) return;
+    if (!mounted) return;
+
+    _loadGameState(incoming);
+    _animateToPlayArea();
+  }
+
+  String _shapeWord(int count) =>
+      count == 1 ? "1 shape" : "$count shapes";
 
   Widget _buildShapePopup(ShapeController controller) {
     return ShapePopup(

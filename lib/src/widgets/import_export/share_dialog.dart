@@ -4,13 +4,23 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ShareDialog extends StatelessWidget {
-  final String base64String;
+import '../../util/share_url.dart';
 
-  const ShareDialog({super.key, required this.base64String});
+class ShareDialog extends StatelessWidget {
+  /// URL-safe base64 encoded game state. The dialog wraps it into a share URL.
+  final String urlSafeCode;
+
+  const ShareDialog({super.key, required this.urlSafeCode});
+
+  // QR (binary mode, ECC L) maxes out at ~2,953 chars at version 40.
+  // Stay slightly under to keep scanning reliable.
+  static const int _qrCharLimit = 2900;
 
   @override
   Widget build(BuildContext context) {
+    final url = ShareUrl.build(urlSafeCode);
+    final qrFits = url.length <= _qrCharLimit;
+
     return PointerInterceptor(
       child: Dialog(
         insetPadding: const EdgeInsets.all(16),
@@ -29,18 +39,18 @@ class ShareDialog extends StatelessWidget {
                 children: [
                   Expanded(
                     child: SelectableText(
-                      base64String,
+                      url,
                       style: const TextStyle(fontSize: 14, overflow: TextOverflow.fade),
                       maxLines: 2,
                     ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.copy),
-                    tooltip: "Copy to clipboard",
+                    tooltip: "Copy link",
                     onPressed: () {
-                      Clipboard.setData(ClipboardData(text: base64String));
+                      Clipboard.setData(ClipboardData(text: url));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Copied to clipboard")),
+                        const SnackBar(content: Text("Link copied to clipboard")),
                       );
                     },
                   ),
@@ -51,30 +61,78 @@ class ShareDialog extends StatelessWidget {
 
               ElevatedButton.icon(
                 icon: const Icon(Icons.share),
-                label: const Text("Share"),
+                label: const Text("Share link"),
                 onPressed: () =>
-                    SharePlus.instance.share(ShareParams(text: base64String)),
+                    SharePlus.instance.share(ShareParams(text: url)),
               ),
 
               const SizedBox(height: 16),
 
-              if (base64String.length <= 2900)
+              if (qrFits)
                 Center(
                   child: QrImageView(
-                    data: base64String,
+                    data: url,
                     version: QrVersions.auto,
                     size: 250,
                   ),
                 )
               else
-                Center(
-                  child: const Text(
-                    "Game File to big for QR Code",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    children: const [
+                      Icon(Icons.qr_code_2, size: 48, color: Colors.black38),
+                      SizedBox(height: 8),
+                      Text(
+                        "Game too large for a QR code.\n"
+                        "Share the link instead.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
+                      ),
+                    ],
                   ),
                 ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
+
+              // Secondary: raw code, for users who prefer pasting it directly
+              // into the import field instead of opening a link.
+              Theme(
+                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.zero,
+                  title: const Text(
+                    "Show raw code",
+                    style: TextStyle(fontSize: 13, color: Colors.black54),
+                  ),
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SelectableText(
+                            urlSafeCode,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              overflow: TextOverflow.fade,
+                            ),
+                            maxLines: 3,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.copy, size: 20),
+                          tooltip: "Copy code",
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(text: urlSafeCode));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Code copied to clipboard")),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
 
               Align(
                 alignment: Alignment.centerRight,
