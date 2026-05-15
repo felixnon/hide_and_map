@@ -20,10 +20,19 @@ class GameState {
     'sh': shapes.map((s) => s.toJson()).toList(),
   };
 
+  /// Standard base64-encoded, gzipped JSON. Used for local storage.
   String encodeGameState() {
     final jsonStr = jsonEncode(_toJson());
     final compressed = GZipEncoder().encode(utf8.encode(jsonStr));
     return base64Encode(compressed);
+  }
+
+  /// URL-safe base64 (no `=` padding) of the gzipped JSON. Use for share URLs
+  /// and QR codes — the result needs no percent-encoding when placed in a URL.
+  String encodeGameStateUrlSafe() {
+    final jsonStr = jsonEncode(_toJson());
+    final compressed = GZipEncoder().encode(utf8.encode(jsonStr));
+    return base64UrlEncode(compressed).replaceAll('=', '');
   }
 
   static Future<void> saveGameState(GameState state) async {
@@ -37,9 +46,16 @@ class GameState {
     shapes: (json['sh'] as List).map((s) => ShapeFactory.fromJson(s)).toList(),
   );
 
+  /// Accepts both standard base64 and URL-safe base64 (with or without
+  /// `=` padding). Returns an empty [GameState] if the input is invalid.
   static GameState decodeGameState(String stored) {
     try {
-      final compressed = base64Decode(stored);
+      // Normalize URL-safe alphabet to standard, then re-add padding.
+      String normalized = stored.replaceAll('-', '+').replaceAll('_', '/');
+      while (normalized.length % 4 != 0) {
+        normalized += '=';
+      }
+      final compressed = base64Decode(normalized);
       final decompressed = GZipDecoder().decodeBytes(compressed);
       final data = jsonDecode(utf8.decode(decompressed)) as Map<String, dynamic>;
       return _fromJson(data);
