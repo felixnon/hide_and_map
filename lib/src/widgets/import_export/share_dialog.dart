@@ -10,7 +10,15 @@ class ShareDialog extends StatelessWidget {
   /// URL-safe base64 encoded game state. The dialog wraps it into a share URL.
   final String urlSafeCode;
 
-  const ShareDialog({super.key, required this.urlSafeCode});
+  /// Optional hiding-zone size (meters) to include in the share URL so the
+  /// recipient can adopt the sender's setting on import.
+  final double? hidingZoneSize;
+
+  const ShareDialog({
+    super.key,
+    required this.urlSafeCode,
+    this.hidingZoneSize,
+  });
 
   // QR (binary mode, ECC L) maxes out at ~2,953 chars at version 40.
   // Stay slightly under to keep scanning reliable.
@@ -18,7 +26,7 @@ class ShareDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final url = ShareUrl.build(urlSafeCode);
+    final url = ShareUrl.build(urlSafeCode, hidingZoneSize: hidingZoneSize);
     final qrFits = url.length <= _qrCharLimit;
 
     return PointerInterceptor(

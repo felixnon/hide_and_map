@@ -96,9 +96,13 @@ class _MapScreenState extends State<MapScreen> {
 
   void _maybeImportFromLaunchUrl() {
     if (!mounted) return;
-    final code = Uri.base.queryParameters[ShareUrl.paramName];
-    if (code == null || code.isEmpty) return;
-    _confirmAndImportGameState(code, context);
+    final payload = ShareUrl.extractPayload(Uri.base.toString());
+    if (payload == null) return;
+    _confirmAndImportGameState(
+      payload.code,
+      context,
+      hidingZoneSize: payload.hidingZoneSize,
+    );
   }
 
   void _loadGameState(GameState gS) {
@@ -293,7 +297,10 @@ class _MapScreenState extends State<MapScreen> {
                     final encoded = gameState.encodeGameStateUrlSafe();
                     showDialog(
                       context: context,
-                      builder: (_) => ShareDialog(urlSafeCode: encoded),
+                      builder: (_) => ShareDialog(
+                        urlSafeCode: encoded,
+                        hidingZoneSize: prefs.hidingZoneSize,
+                      ),
                     );
                     break;
                   case 'reset':
@@ -591,15 +598,28 @@ class _MapScreenState extends State<MapScreen> {
     }
 
     // Full game state import. Accepts either a raw code or a share URL.
-    final code = ShareUrl.extractCode(imported) ?? imported;
-    _confirmAndImportGameState(code, context);
+    final payload = ShareUrl.extractPayload(imported);
+    if (payload == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Import failed!")));
+      return;
+    }
+    _confirmAndImportGameState(
+      payload.code,
+      context,
+      hidingZoneSize: payload.hidingZoneSize,
+    );
   }
 
   /// Decode [code], show a confirmation dialog, then replace the game state.
+  /// If [hidingZoneSize] is provided and differs from the current preference,
+  /// it is mentioned in the dialog and applied on confirm.
   Future<void> _confirmAndImportGameState(
     String code,
-    BuildContext context,
-  ) async {
+    BuildContext context, {
+    double? hidingZoneSize,
+  }) async {
     final incoming = GameState.decodeGameState(code);
     if (incoming.playArea == null) {
       ScaffoldMessenger.of(
@@ -611,19 +631,33 @@ class _MapScreenState extends State<MapScreen> {
     final currentShapes = gameState.shapes.length;
     final currentHasArea = gameState.playArea != null;
     final incomingShapes = incoming.shapes.length;
+    final willChangeHz =
+        hidingZoneSize != null && hidingZoneSize != prefs.hidingZoneSize;
+
+    final buffer = StringBuffer();
+    if (currentHasArea) {
+      buffer.write(
+        "This will replace your current game "
+        "(${_shapeWord(currentShapes)}) "
+        "with the shared game (${_shapeWord(incomingShapes)}).",
+      );
+    } else {
+      buffer.write("Load the shared game (${_shapeWord(incomingShapes)})?");
+    }
+    if (willChangeHz) {
+      buffer.write(
+        "\n\nHiding zone size will change from "
+        "${_formatMeters(prefs.hidingZoneSize)} to "
+        "${_formatMeters(hidingZoneSize)}.",
+      );
+    }
 
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogCtx) => PointerInterceptor(
         child: AlertDialog(
           title: const Text("Import shared game?"),
-          content: Text(
-            currentHasArea
-                ? "This will replace your current game "
-                      "(${_shapeWord(currentShapes)}) "
-                      "with the shared game (${_shapeWord(incomingShapes)})."
-                : "Load the shared game (${_shapeWord(incomingShapes)})?",
-          ),
+          content: Text(buffer.toString()),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogCtx).pop(false),
@@ -642,12 +676,26 @@ class _MapScreenState extends State<MapScreen> {
     if (confirmed != true) return;
     if (!mounted) return;
 
+    if (willChangeHz) {
+      await prefs.setHidingZoneSize(hidingZoneSize);
+    }
+
     _loadGameState(incoming);
     _animateToPlayArea();
   }
 
   String _shapeWord(int count) =>
       count == 1 ? "1 shape" : "$count shapes";
+
+  String _formatMeters(double meters) {
+    if (meters >= 1000) {
+      final km = meters / 1000;
+      return km == km.roundToDouble()
+          ? "${km.toStringAsFixed(0)} km"
+          : "${km.toStringAsFixed(1)} km";
+    }
+    return "${meters.round()} m";
+  }
 
   Widget _buildShapePopup(ShapeController controller) {
     return ShapePopup(
